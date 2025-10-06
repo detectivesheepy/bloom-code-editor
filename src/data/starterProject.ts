@@ -14,7 +14,7 @@ export const starterProject: FileNode = {
           name: 'index.ts',
           path: 'my-project/src/index.ts',
           type: 'file',
-          content: `// Welcome to Code Editor!
+          content: `// Welcome to BloomVisual Code!
 // This is a lightweight code editor inspired by VS Code
 
 console.log('Hello, World!');
@@ -42,7 +42,7 @@ export function capitalize(str: string): string {
 }
 
 export const constants = {
-  APP_NAME: 'Code Editor',
+  APP_NAME: 'BloomVisual Code',
   VERSION: '1.0.0'
 };
 `
@@ -56,7 +56,7 @@ export const constants = {
       content: `{
   "name": "my-project",
   "version": "1.0.0",
-  "description": "A sample project for Code Editor",
+  "description": "A sample project for BloomVisual Code",
   "main": "src/index.ts",
   "scripts": {
     "start": "node src/index.ts",

@@ -4,14 +4,15 @@ import { Tab } from '@/types/editor';
 interface CodeEditorProps {
   activeTab: Tab | null;
   onContentChange: (path: string, content: string) => void;
+  monacoTheme: string;
 }
 
-export const CodeEditor = ({ activeTab, onContentChange }: CodeEditorProps) => {
+export const CodeEditor = ({ activeTab, onContentChange, monacoTheme }: CodeEditorProps) => {
   if (!activeTab) {
     return (
       <div className="flex-1 flex items-center justify-center bg-[hsl(var(--editor-bg))]">
         <div className="text-center">
-          <h2 className="text-2xl font-bold mb-2">Code Editor</h2>
+          <h2 className="text-2xl font-bold mb-2">BloomVisual Code</h2>
           <p className="text-muted-foreground">Select a file to start editing</p>
         </div>
       </div>
@@ -24,7 +25,7 @@ export const CodeEditor = ({ activeTab, onContentChange }: CodeEditorProps) => {
         height="100%"
         language={activeTab.language}
         value={activeTab.content}
-        theme="vs-dark"
+        theme={monacoTheme}
         onChange={(value) => onContentChange(activeTab.path, value || '')}
         options={{
           minimap: { enabled: true },

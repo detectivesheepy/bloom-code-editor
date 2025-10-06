@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ActivityBar } from '@/components/ActivityBar';
 import { Sidebar } from '@/components/Sidebar';
 import { EditorTabs } from '@/components/EditorTabs';
 import { CodeEditor } from '@/components/CodeEditor';
 import { StatusBar } from '@/components/StatusBar';
 import { starterProject, mockExtensions, mockGitStatus } from '@/data/starterProject';
+import { themes, monacoThemeMap } from '@/data/themes';
 import { FileNode, Tab, Extension } from '@/types/editor';
 import { toast } from 'sonner';
 
@@ -28,6 +29,25 @@ const Index = () => {
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [extensions, setExtensions] = useState<Extension[]>(mockExtensions);
+  const [currentTheme, setCurrentTheme] = useState('dark');
+
+  useEffect(() => {
+    const theme = themes.find((t) => t.id === currentTheme);
+    if (theme) {
+      const root = document.documentElement;
+      root.style.setProperty('--background', theme.colors.background);
+      root.style.setProperty('--foreground', theme.colors.foreground);
+      root.style.setProperty('--primary', theme.colors.primary);
+      root.style.setProperty('--secondary', theme.colors.secondary);
+      root.style.setProperty('--muted', theme.colors.muted);
+      root.style.setProperty('--accent', theme.colors.accent);
+      root.style.setProperty('--border', theme.colors.border);
+      root.style.setProperty('--editor-bg', theme.colors.editorBg);
+      root.style.setProperty('--sidebar-bg', theme.colors.sidebarBg);
+      root.style.setProperty('--activitybar-bg', theme.colors.activitybarBg);
+      root.style.setProperty('--statusbar-bg', theme.colors.statusbarBg);
+    }
+  }, [currentTheme]);
 
   const handleFileSelect = (file: FileNode) => {
     if (file.type === 'file' && file.content) {
@@ -100,7 +120,7 @@ const Index = () => {
             onTabSelect={setActiveTab}
             onTabClose={handleTabClose}
           />
-          <CodeEditor activeTab={currentTab || null} onContentChange={handleContentChange} />
+          <CodeEditor activeTab={currentTab || null} onContentChange={handleContentChange} monacoTheme={monacoThemeMap[currentTheme]} />
         </div>
       </div>
       <StatusBar
@@ -108,6 +128,8 @@ const Index = () => {
         lineNumber={1}
         columnNumber={1}
         language={currentTab?.language || 'plaintext'}
+        currentTheme={currentTheme}
+        onThemeChange={setCurrentTheme}
       />
     </div>
   );
