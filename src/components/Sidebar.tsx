@@ -2,9 +2,10 @@ import { FileNode, Extension, GitStatus } from '@/types/editor';
 import { FileExplorer } from './FileExplorer';
 import { GitPanel } from './GitPanel';
 import { ExtensionsPanel } from './ExtensionsPanel';
+import { Terminal } from './Terminal';
 
 interface SidebarProps {
-  activeView: 'files' | 'git' | 'extensions' | 'search' | 'settings';
+  activeView: 'files' | 'git' | 'extensions' | 'search' | 'settings' | 'terminal';
   files: FileNode;
   gitStatus: GitStatus;
   extensions: Extension[];
@@ -12,6 +13,8 @@ interface SidebarProps {
   selectedFile: string | null;
   onInstallExtension: (extensionId: string) => void;
   onUninstallExtension: (extensionId: string) => void;
+  onFileCreate?: (path: string, content: string) => void;
+  onFileDelete?: (path: string) => void;
 }
 
 export const Sidebar = ({
@@ -23,6 +26,8 @@ export const Sidebar = ({
   selectedFile,
   onInstallExtension,
   onUninstallExtension,
+  onFileCreate,
+  onFileDelete,
 }: SidebarProps) => {
   const renderContent = () => {
     switch (activeView) {
@@ -38,6 +43,8 @@ export const Sidebar = ({
             onUninstall={onUninstallExtension}
           />
         );
+      case 'terminal':
+        return <Terminal onFileCreate={onFileCreate} onFileDelete={onFileDelete} />;
       case 'search':
         return (
           <div className="p-4">

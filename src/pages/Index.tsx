@@ -25,7 +25,7 @@ const getLanguageFromPath = (path: string): string => {
 };
 
 const Index = () => {
-  const [activeView, setActiveView] = useState<'files' | 'git' | 'extensions' | 'search' | 'settings'>('files');
+  const [activeView, setActiveView] = useState<'files' | 'git' | 'extensions' | 'search' | 'settings' | 'terminal'>('files');
   const [tabs, setTabs] = useState<Tab[]>([]);
   const [activeTab, setActiveTab] = useState<string | null>(null);
   const [extensions, setExtensions] = useState<Extension[]>(mockExtensions);
@@ -97,6 +97,16 @@ const Index = () => {
     toast.success(`${ext?.name} uninstalled successfully!`);
   };
 
+  const handleFileCreate = (path: string, content: string) => {
+    toast.success(`File operation queued: ${path}`);
+    // In a real implementation, this would update the file tree
+  };
+
+  const handleFileDelete = (path: string) => {
+    toast.success(`Deletion queued: ${path}`);
+    // In a real implementation, this would update the file tree
+  };
+
   const currentTab = tabs.find((tab) => tab.path === activeTab);
 
   return (
@@ -112,6 +122,8 @@ const Index = () => {
           selectedFile={activeTab}
           onInstallExtension={handleInstallExtension}
           onUninstallExtension={handleUninstallExtension}
+          onFileCreate={handleFileCreate}
+          onFileDelete={handleFileDelete}
         />
         <div className="flex-1 flex flex-col">
           <EditorTabs
